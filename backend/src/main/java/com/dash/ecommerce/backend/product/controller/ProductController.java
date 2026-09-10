@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.dash.ecommerce.backend.product.dto.ProductRequest;
+import com.dash.ecommerce.backend.product.dto.ProductResponse;
 import com.dash.ecommerce.backend.product.entity.Product;
 import com.dash.ecommerce.backend.product.service.ProductService;
 
@@ -28,26 +30,26 @@ public class ProductController {
 	
 	
 	@PostMapping
-	public Product createProduct(@Valid @RequestBody Product product) {
-		return productService.createProduct(product);
+	public ProductResponse createProduct(@Valid @RequestBody ProductRequest request) {
+		return productService.createProduct(request);
 	}
 	
 	@GetMapping("/{id}")
-	public Product getProductById(@PathVariable Long id) {
+	public ProductResponse getProductById(@PathVariable Long id) {
 		return productService.getProductById(id);
 	}
 	
 	@GetMapping
-	public List<Product> getAllProducts(){
+	public List<ProductResponse> getAllProducts(){
 		return productService.getAllProducts();
 	}
 	
 	@PutMapping("/{id}")
-    public Product updateProduct(
+    public ProductResponse updateProduct(
             @PathVariable Long id,
-            @Valid @RequestBody Product product) {
+            @Valid @RequestBody ProductRequest request) {
 
-        return productService.updateProduct(id, product);
+        return productService.updateProduct(id, request);
     }
 
     @DeleteMapping("/{id}")

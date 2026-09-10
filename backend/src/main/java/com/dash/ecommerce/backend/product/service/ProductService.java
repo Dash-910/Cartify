@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.dash.ecommerce.backend.product.dto.ProductRequest;
+import com.dash.ecommerce.backend.product.dto.ProductResponse;
 import com.dash.ecommerce.backend.product.entity.Product;
 import com.dash.ecommerce.backend.product.exception.ProductNotFoundException;
 import com.dash.ecommerce.backend.product.repository.ProductRepository;
@@ -18,31 +20,45 @@ public class ProductService {
         this.productRepository = productRepository;
      }
 	 
-     public Product createProduct(Product product) {
-    	 return productRepository.save(product);
+     public ProductResponse createProduct(ProductRequest request) {
+    	 
+    	 Product product = new Product();
+    	 
+    	 product.setName(request.getName());
+    	 product.setGroupId(request.getGroupId());
+    	 product.setDescription(request.getDescription());
+         product.setPrice(request.getPrice());
+         product.setStock(request.getStock());
+         
+         Product savedProduct = productRepository.save(product);
+         
+         return toResponse(savedProduct);
      }
      
-     public Product getProductById(Long id) {
-    	    return productRepository.findById(id)
+     public ProductResponse getProductById(Long id) {
+    	   Product product = productRepository.findById(id)
     	            .orElseThrow(() -> new ProductNotFoundException(id));
+    	   
+    	   return toResponse(product);
      }
      
-     public List<Product> getAllProducts() {
-    	    return productRepository.findAll();
+     public List<ProductResponse> getAllProducts() {
+    	    return productRepository.findAll().stream().map(this::toResponse).toList();
      }
      
-     public Product updateProduct(Long id, Product product) {
+     public ProductResponse updateProduct(Long id, ProductRequest request) {
 
     	    Product existingProduct = productRepository.findById(id)
     	            .orElseThrow(() -> new ProductNotFoundException(id));
 
-    	    existingProduct.setName(product.getName());
-    	    existingProduct.setGroupId(product.getGroupId());
-    	    existingProduct.setDescription(product.getDescription());
-    	    existingProduct.setPrice(product.getPrice());
-    	    existingProduct.setStock(product.getStock());
-
-    	    return productRepository.save(existingProduct);
+    	    existingProduct.setName(request.getName());
+    	    existingProduct.setGroupId(request.getGroupId());
+    	    existingProduct.setDescription(request.getDescription());
+    	    existingProduct.setPrice(request.getPrice());
+    	    existingProduct.setStock(request.getStock());
+    	    
+    	    Product updatedProduct = productRepository.save(existingProduct);
+    	    return toResponse(updatedProduct);
      }
      
      public void deleteProduct(Long id) {
@@ -50,5 +66,19 @@ public class ProductService {
     	            .orElseThrow(() -> new ProductNotFoundException(id));
 
     	    productRepository.delete(existingProduct);
+     }
+     
+     private ProductResponse toResponse(Product product) {
+
+         return new ProductResponse(
+                 product.getId(),
+                 product.getName(),
+                 product.getGroupId(),
+                 product.getDescription(),
+                 product.getPrice(),
+                 product.getStock(),
+                 product.getCreatedAt(),
+                 product.getUpdatedAt()
+         );
      }
 }

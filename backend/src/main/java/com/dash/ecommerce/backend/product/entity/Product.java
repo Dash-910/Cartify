@@ -24,21 +24,15 @@ public class Product {
 	private Long id;
 	
 	@Column(nullable = false)
-	@NotBlank
 	private String name;
 	
 	@Column(name = "groupd_id")
-	@NotBlank
 	private Long groupId;
 	
 	private String description;
 	
-	@NotNull
-	@Positive
 	private BigDecimal price;
 	
-	@NotNull
-	@PositiveOrZero
 	private Integer stock;
 	
 	@Column(name = "created_at")

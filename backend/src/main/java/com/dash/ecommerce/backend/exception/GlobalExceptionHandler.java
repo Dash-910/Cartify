@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.dash.ecommerce.backend.product.exception.ProductNotFoundException;
+import com.dash.ecommerce.backend.productgroup.exception.ProductGroupNotFoundException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -38,5 +39,16 @@ public class GlobalExceptionHandler {
                         errors.put(error.getField(), error.getDefaultMessage()));
 
         return errors;
+    }
+    
+    @ExceptionHandler(ProductGroupNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleProductGroupNotFound(
+            ProductGroupNotFoundException ex) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return error;
     }
 }

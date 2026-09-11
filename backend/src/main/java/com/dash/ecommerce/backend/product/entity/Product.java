@@ -3,9 +3,13 @@ package com.dash.ecommerce.backend.product.entity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.dash.ecommerce.backend.productgroup.entity.ProductGroup;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,8 +30,9 @@ public class Product {
 	@Column(nullable = false)
 	private String name;
 	
-	@Column(name = "groupd_id")
-	private Long groupId;
+	@ManyToOne
+	@JoinColumn(name = "groupd_id")
+	private ProductGroup productGroup;
 	
 	private String description;
 	
@@ -47,12 +52,12 @@ public class Product {
 	}
 	
 	// Constructor without id
-    public Product(String name, Long groupId, String description,
+    public Product(String name, ProductGroup productGroup, String description,
                    BigDecimal price, Integer stock,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
 
         this.name = name;
-        this.groupId = groupId;
+        this.productGroup = productGroup;
         this.description = description;
         this.price = price;
         this.stock = stock;
@@ -79,18 +84,17 @@ public class Product {
         this.name = name;
     }
 
-    public Long getGroupId() {
-        return groupId;
+    public ProductGroup getProductGroup() {
+        return productGroup;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setProductGroup(ProductGroup productGroup) {
+        this.productGroup = productGroup;
     }
-
+    
     public String getDescription() {
-        return description;
+    	return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }

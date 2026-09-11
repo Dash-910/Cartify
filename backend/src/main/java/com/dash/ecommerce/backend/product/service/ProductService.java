@@ -10,22 +10,30 @@ import com.dash.ecommerce.backend.product.dto.ProductResponse;
 import com.dash.ecommerce.backend.product.entity.Product;
 import com.dash.ecommerce.backend.product.exception.ProductNotFoundException;
 import com.dash.ecommerce.backend.product.repository.ProductRepository;
+import com.dash.ecommerce.backend.productgroup.entity.ProductGroup;
+import com.dash.ecommerce.backend.productgroup.exception.ProductGroupNotFoundException;
+import com.dash.ecommerce.backend.productgroup.repository.ProductGroupRepository;
 
 @Service
 public class ProductService {
 	
 	 private final ProductRepository productRepository;
+	 private final ProductGroupRepository productGroupRepository;
 
-     public ProductService(ProductRepository productRepository) {
+     public ProductService(ProductRepository productRepository, ProductGroupRepository productGroupRespository) {
         this.productRepository = productRepository;
+        this.productGroupRepository = productGroupRespository;
      }
 	 
      public ProductResponse createProduct(ProductRequest request) {
     	 
+    	 //fetch the product group 
+    	 ProductGroup productGroup = productGroupRepository.findById(request.getGroupId()).orElseThrow(()-> new ProductGroupNotFoundException(request.getGroupId()));
+    	 
     	 Product product = new Product();
     	 
     	 product.setName(request.getName());
-    	 product.setGroupId(request.getGroupId());
+    	 product.setProductGroup(productGroup);
     	 product.setDescription(request.getDescription());
          product.setPrice(request.getPrice());
          product.setStock(request.getStock());
@@ -50,9 +58,12 @@ public class ProductService {
 
     	    Product existingProduct = productRepository.findById(id)
     	            .orElseThrow(() -> new ProductNotFoundException(id));
-
+    	    
+    	    //fetch the product group 
+    	    ProductGroup productGroup = productGroupRepository.findById(request.getGroupId()).orElseThrow(()-> new ProductGroupNotFoundException(request.getGroupId()));
+       	 
     	    existingProduct.setName(request.getName());
-    	    existingProduct.setGroupId(request.getGroupId());
+    	    existingProduct.setProductGroup(productGroup);
     	    existingProduct.setDescription(request.getDescription());
     	    existingProduct.setPrice(request.getPrice());
     	    existingProduct.setStock(request.getStock());
@@ -73,7 +84,7 @@ public class ProductService {
          return new ProductResponse(
                  product.getId(),
                  product.getName(),
-                 product.getGroupId(),
+                 product.getProductGroup().getId(),
                  product.getDescription(),
                  product.getPrice(),
                  product.getStock(),

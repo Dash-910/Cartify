@@ -6,9 +6,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.dash.ecommerce.backend.product.repository.ProductRepository;
 import com.dash.ecommerce.backend.productgroup.dto.ProductGroupRequest;
 import com.dash.ecommerce.backend.productgroup.dto.ProductGroupResponse;
 import com.dash.ecommerce.backend.productgroup.entity.ProductGroup;
+import com.dash.ecommerce.backend.productgroup.exception.ProductGroupInUseException;
 import com.dash.ecommerce.backend.productgroup.exception.ProductGroupNotFoundException;
 import com.dash.ecommerce.backend.productgroup.repository.ProductGroupRepository;
 
@@ -17,9 +19,11 @@ import com.dash.ecommerce.backend.productgroup.repository.ProductGroupRepository
 public class ProductGroupService {
 	
 	private final ProductGroupRepository productGroupRepository;
+	private final ProductRepository productRepository;
 	
-	public ProductGroupService(ProductGroupRepository productGroupRepository) {
+	public ProductGroupService(ProductGroupRepository productGroupRepository, ProductRepository productRepository) {
 	        this.productGroupRepository = productGroupRepository;
+	        this.productRepository = productRepository;
 	}
 	
 	public ProductGroupResponse createProductGroup(ProductGroupRequest request) {
@@ -71,7 +75,11 @@ public class ProductGroupService {
 
 	        ProductGroup productGroup = productGroupRepository.findById(id)
 	                .orElseThrow(() -> new ProductGroupNotFoundException(id));
-
+	        
+	        if (productRepository.existsByProductGroupId(id)) {
+	        	throw new ProductGroupInUseException(id);
+	        }
+	        
 	        productGroupRepository.delete(productGroup);
 	 }
 	 

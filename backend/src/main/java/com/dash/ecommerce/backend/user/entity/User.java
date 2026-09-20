@@ -5,6 +5,8 @@ import java.util.List;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,7 +25,9 @@ public class User {
     private String email;
     private String phoneNumber;
     private String password;
-    private String role;
+    
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
@@ -32,7 +36,7 @@ public class User {
     }
 
     public User(String name, String email, String phoneNumber,
-                String password, String role) {
+                String password, Role role) {
         this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
@@ -80,11 +84,11 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 

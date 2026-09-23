@@ -1,5 +1,6 @@
 package com.dash.ecommerce.backend.user.dto;
 
+import com.dash.ecommerce.backend.user.entity.Role;
 
 public class UserResponse {
 	
@@ -7,13 +8,13 @@ public class UserResponse {
 	private String name;
 	private String email;
 	private String phoneNumber;
-	private String role;
+	private Role role;
 	
 	public UserResponse() {
 		
 	}
 	
-	public UserResponse(Long id, String name, String email, String phoneNumber, String role) {
+	public UserResponse(Long id, String name, String email, String phoneNumber, Role role) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
@@ -53,11 +54,11 @@ public class UserResponse {
 		this.phoneNumber = phoneNumber;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(Role role) {
 		this.role = role;
 	}
 	

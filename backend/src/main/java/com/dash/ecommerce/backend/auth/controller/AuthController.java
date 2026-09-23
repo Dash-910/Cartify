@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.dash.ecommerce.backend.auth.dto.AuthResponse;
+import com.dash.ecommerce.backend.auth.dto.LoginRequest;
 import com.dash.ecommerce.backend.auth.dto.RegisterRequest;
 import com.dash.ecommerce.backend.auth.service.AuthService;
 
@@ -25,5 +27,12 @@ public class AuthController {
 		authService.register(request);
 		
 		return ResponseEntity.status(HttpStatus.CREATED).body("User registered sucessfully.");
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request){
+		
+		AuthResponse response = authService.login(request);
+		return ResponseEntity.ok(response);
 	}
 }

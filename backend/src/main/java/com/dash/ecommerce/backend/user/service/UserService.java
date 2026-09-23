@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.dash.ecommerce.backend.user.dto.UserRequest;
 import com.dash.ecommerce.backend.user.dto.UserResponse;
+import com.dash.ecommerce.backend.user.entity.Role;
 import com.dash.ecommerce.backend.user.entity.User;
 import com.dash.ecommerce.backend.user.exception.UserNotFoundException;
 import com.dash.ecommerce.backend.user.repository.UserRepository;
@@ -28,7 +29,7 @@ public class UserService {
 		user.setEmail(userRequest.getEmail());
 		user.setPhoneNumber(userRequest.getPhoneNumber());
 		user.setPassword(userRequest.getPassword());
-		user.setRole("CUSTOMER");
+		user.setRole(Role.CUSTOMER);
 		
 		User savedUser = userRepository.save(user);
 		return toResponse(savedUser);

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.dash.ecommerce.backend.auth.exception.InvalidCredentialsException;
 import com.dash.ecommerce.backend.product.exception.ProductNotFoundException;
 import com.dash.ecommerce.backend.productgroup.exception.ProductGroupInUseException;
 import com.dash.ecommerce.backend.productgroup.exception.ProductGroupNotFoundException;
@@ -58,6 +59,16 @@ public class GlobalExceptionHandler {
     public Map<String, String> handleProductGroupInUse(
     		ProductGroupInUseException ex) {
     	Map<String, String> error = new HashMap<>();
+    	error.put("error", ex.getMessage());
+    	
+    	return error;
+    }
+    
+    @ExceptionHandler(InvalidCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleInvalidCredentials(
+    		InvalidCredentialsException ex){
+    	Map<String,String> error = new HashMap<>();
     	error.put("error", ex.getMessage());
     	
     	return error;

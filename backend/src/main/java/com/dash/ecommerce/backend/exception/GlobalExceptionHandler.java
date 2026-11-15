@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.dash.ecommerce.backend.auth.exception.AccessDeniedException;
 import com.dash.ecommerce.backend.auth.exception.EmailAlreadyExistsException;
 import com.dash.ecommerce.backend.auth.exception.InvalidCredentialsException;
+import com.dash.ecommerce.backend.cart.exception.CartItemNotFoundException;
+import com.dash.ecommerce.backend.cart.exception.CartNotFoundException;
+import com.dash.ecommerce.backend.cart.exception.InsufficientStockException;
 import com.dash.ecommerce.backend.product.exception.ProductNotFoundException;
 import com.dash.ecommerce.backend.productgroup.exception.ProductGroupInUseException;
 import com.dash.ecommerce.backend.productgroup.exception.ProductGroupNotFoundException;
@@ -75,6 +79,14 @@ public class GlobalExceptionHandler {
     	return error;
     }
     
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public Map<String, String> handleAccessDenied(AccessDeniedException ex){
+    	Map<String, String> error = new HashMap<>();
+    	error.put("error", ex.getMessage());
+    	return error;
+    }
+    
     @ExceptionHandler(EmailAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
     public Map<String, String> handleEmailAlreadyExists(
@@ -83,6 +95,27 @@ public class GlobalExceptionHandler {
     	error.put("error", ex.getMessage());
     	
     	return error;
+    }
+    
+    @ExceptionHandler(CartNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleCartNotFound(CartNotFoundException ex){
+    	return Map.of("error", ex.getMessage());
+    }
+    
+    @ExceptionHandler(CartItemNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, String> handleCartItemNotFound(CartItemNotFoundException ex){
+    	Map<String, String> error = new HashMap<>();
+    	error.put("error", ex.getMessage());
+    	
+    	return error;
+    }
+    
+    @ExceptionHandler(InsufficientStockException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Map<String, String> handleInsufficientStock(InsufficientStockException ex){
+    	return Map.of("error", ex.getMessage());
     }
     
 }

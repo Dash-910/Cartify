@@ -17,7 +17,7 @@ public class UpdateCartItemRequest {
 		return quantity;
 	}
 	
-	public void setQauntity (Integer quantity) {
+	public void setQuantity (Integer quantity) {
 		this.quantity = quantity;
 	}
 }

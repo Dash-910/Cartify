@@ -43,7 +43,7 @@ public class CartItem {
 	private Integer quantity;
 	
 	
-	@Column(name = "created_at", nullable = false, updateable = false)
+	@Column(name = "created_at", nullable = false, updatable = false)
 	private LocalDateTime createdAt;
 	
 	@Column(name = "updated_at", nullable = false)

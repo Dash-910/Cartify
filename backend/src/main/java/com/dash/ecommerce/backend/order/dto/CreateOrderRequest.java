@@ -18,7 +18,7 @@ public class CreateOrderRequest {
 		return addressId;
 	}
 	
-	public void setAddress(Long addressId) {
+	public void setAddressId(Long addressId) {
 		this.addressId = addressId;
 	}
 	

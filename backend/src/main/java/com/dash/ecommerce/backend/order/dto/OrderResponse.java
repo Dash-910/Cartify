@@ -8,7 +8,7 @@ import com.dash.ecommerce.backend.order.entity.OrderStatus;
 
 public class OrderResponse {
 	
-	private Long OrderId;
+	private Long orderId;
 	private OrderStatus status;
 	private BigDecimal totalAmount;
 	private OrderAddressResponse shippingAddress;
@@ -18,7 +18,7 @@ public class OrderResponse {
 	public OrderResponse(Long orderId, OrderStatus status, BigDecimal totalAmount, OrderAddressResponse shippingAddress,
 			List<OrderItemResponse> items, LocalDateTime createdAt) {
 		super();
-		OrderId = orderId;
+		this.orderId = orderId;
 		this.status = status;
 		this.totalAmount = totalAmount;
 		this.shippingAddress = shippingAddress;
@@ -27,11 +27,11 @@ public class OrderResponse {
 	}
 
 	public Long getOrderId() {
-		return OrderId;
+		return orderId;
 	}
 
 	public void setOrderId(Long orderId) {
-		OrderId = orderId;
+		this.orderId = orderId;
 	}
 
 	public OrderStatus getStatus() {
